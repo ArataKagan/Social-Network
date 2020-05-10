@@ -1,6 +1,10 @@
 import React, { Fragment, useState } from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-export const Register = () => {
+import { setAlert } from '../../actions/alert';
+import PropTypes from 'prop-types';
+
+const Register = ({ setAlert }) => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -13,10 +17,10 @@ export const Register = () => {
   const onChange = e =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
-  const onSubmit = e => {
+  const onSubmit = async e => {
     e.preventDefault();
     if (password !== password2) {
-      console.log('Password does not match');
+      setAlert('Password does not match', 'danger');
     } else {
       console.log(formData);
     }
@@ -28,14 +32,14 @@ export const Register = () => {
       <p className='lead'>
         <i className='fas fa-user'></i> Create Your Account
       </p>
-      <form className='form' onSubmit={e => onSubmit(e)}>
+      <form className='form' onSubmit={onSubmit}>
         <div className='form-group'>
           <input
             type='text'
             placeholder='Name'
             name='name'
             value={name}
-            onChange={e => onChange(e)}
+            onChange={onChange}
             required
           />
         </div>
@@ -45,7 +49,7 @@ export const Register = () => {
             placeholder='Email Address'
             name='email'
             value={email}
-            onChange={e => onChange(e)}
+            onChange={onChange}
             required
           />
           <small className='form-text'>
@@ -60,7 +64,7 @@ export const Register = () => {
             name='password'
             minLength='6'
             value={password}
-            onChange={e => onChange(e)}
+            onChange={onChange}
           />
         </div>
         <div className='form-group'>
@@ -70,7 +74,7 @@ export const Register = () => {
             name='password2'
             minLength='6'
             value={password2}
-            onChange={e => onChange(e)}
+            onChange={onChange}
           />
         </div>
         <input type='submit' className='btn btn-primary' value='Register' />
@@ -81,3 +85,12 @@ export const Register = () => {
     </Fragment>
   );
 };
+
+Register.propTypes = {
+  setAlert: PropTypes.func.isRequired
+};
+
+export default connect(
+  null,
+  { setAlert }
+)(Register);
