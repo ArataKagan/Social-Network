@@ -41,13 +41,14 @@ export const createProfile = (
       payload: res.data
     });
 
-    dispatch(setAlert(edit ? 'Profile Updated' : 'Profile Created'));
+    dispatch(setAlert(edit ? 'Profile Updated' : 'Profile Created', 'success'));
 
     if (!edit) {
       history.push('/dashboard');
     }
   } catch (err) {
     const errors = err.response.data.errors;
+    console.log(errors);
 
     if (errors) {
       errors.forEach(error => dispatch(setAlert(error.msg, 'danger')));
